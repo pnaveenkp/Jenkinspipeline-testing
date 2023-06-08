@@ -1,0 +1,52 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone Git Repo') {
+            steps {
+                sh 'rm -rf Jenkinspipeline-testing'
+                sh 'git clone -b scriptpipeline https://github.com/mavrick202/Jenkinspipeline-testing.git'
+                sh 'ls -al'
+            }
+        }
+        stage('Terraform Plan') {
+            when {
+                    expression {
+                        params.PLAN == 'YES'
+                    }
+                }
+            steps {
+                dir('Jenkinspipeline-testing') {
+                    sh 'terraform init'
+                    sh 'terraform plan'
+                }
+            }
+        }
+        stage('Terraform Apply') {
+            when {
+                    expression {
+                        params.APPLY == 'YES'
+                    }
+                }
+            steps {
+                dir('Jenkinspipeline-testing') {
+                    sh 'terraform init'
+                    sh 'terraform apply --auto-approve'
+                }
+            }
+        }
+        stage('Terraform Destroy') {
+            when {
+                    expression {
+                        params.DESTROY == 'YES'
+                    }
+                }
+            steps {
+                dir('Jenkinspipeline-testing') {
+                    sh 'terraform init'
+                    sh 'terraform apply --auto-approve'
+                }
+            }
+        }
+    }
+}
