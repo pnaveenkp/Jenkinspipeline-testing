@@ -5,7 +5,7 @@ pipeline {
         stage('Clone Git Repo') {
             steps {
                 sh 'rm -rf Jenkinspipeline-testing'
-                sh 'git clone -b scriptpipeline https://github.com/mavrick202/Jenkinspipeline-testing.git'
+                sh 'git clone -b scriptpipeline https://github.com/pnaveenkp/Jenkinspipeline-testing.git'
                 sh 'ls -al'
             }
         }
